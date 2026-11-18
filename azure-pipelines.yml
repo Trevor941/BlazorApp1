@@ -45,7 +45,7 @@ steps:
 - task: ArchiveFiles@2
   displayName: 'Create deployment ZIP'
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish/s'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/BlazorApp1.zip'
