@@ -9,51 +9,51 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-# Install .NET SDK
+# Install .NET 10 SDK
 - task: UseDotNet@2
-  displayName: 'Install .NET SDK'
+  displayName: 'Install .NET 10 SDK'
   inputs:
     packageType: 'sdk'
     version: '10.x'
 
-# Restore NuGet packages
+# Restore
 - task: DotNetCoreCLI@2
   displayName: 'Restore NuGet packages'
   inputs:
     command: 'restore'
-    projects: '**/*.sln'
+    projects: 'BlazorApp1.csproj'
 
-# Build Blazor application
+# Build
 - task: DotNetCoreCLI@2
   displayName: 'Build Blazor application'
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: 'BlazorApp1.csproj'
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
-# Publish Blazor application
+# Publish
 - task: DotNetCoreCLI@2
   displayName: 'Publish Blazor application'
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: '**/BlazorApp1.csproj'
+    projects: 'BlazorApp1.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish'
     zipAfterPublish: false
 
-# Create deployment ZIP
+# Create ZIP
 - task: ArchiveFiles@2
   displayName: 'Create deployment ZIP'
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/BlazorApp.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/BlazorApp1.zip'
     replaceExistingArchive: true
 
 # Publish artifact
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifact'
+  displayName: 'Publish deployment artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
